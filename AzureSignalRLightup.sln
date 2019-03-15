@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28710.17
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureSignalRLightup", "AzureSignalRLightup\AzureSignalRLightup.csproj", "{A561F2D3-C0FA-4F2D-9561-FCDB0FC93BFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.SignalR.Remix", "Microsoft.Azure.SignalR.Remix\Microsoft.Azure.SignalR.Remix.csproj", "{069C33B6-A882-497C-9BD0-0B16987BFE44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A561F2D3-C0FA-4F2D-9561-FCDB0FC93BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A561F2D3-C0FA-4F2D-9561-FCDB0FC93BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A561F2D3-C0FA-4F2D-9561-FCDB0FC93BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A561F2D3-C0FA-4F2D-9561-FCDB0FC93BFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{069C33B6-A882-497C-9BD0-0B16987BFE44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{069C33B6-A882-497C-9BD0-0B16987BFE44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{069C33B6-A882-497C-9BD0-0B16987BFE44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{069C33B6-A882-497C-9BD0-0B16987BFE44}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D98B1AAD-32EF-4D78-96AF-E00DC388A690}
+	EndGlobalSection
+EndGlobal
