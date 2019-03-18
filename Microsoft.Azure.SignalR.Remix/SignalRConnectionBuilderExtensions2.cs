@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Connections;
 
 namespace Microsoft.AspNetCore.SignalR
 {
-    public static class SignalRConnectionBuilderExtensions2
+    internal static class SignalRConnectionBuilderExtensions2
     {
         private static readonly MethodInfo _useHubMethod = typeof(SignalRConnectionBuilderExtensions).GetMethod(nameof(SignalRConnectionBuilderExtensions.UseHub));
 

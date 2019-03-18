@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Azure.SignalR
 {
-    public class ServiceHubDispatcher
+    internal class ServiceHubDispatcher
     {
         // HACK: Get the dispatcher so that we can invoke it
         private readonly Type _serviceDispatcherType = typeof(ServiceOptions).Assembly.GetType("Microsoft.Azure.SignalR.ServiceHubDispatcher`1");

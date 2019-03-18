@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http.Connections;
 
 namespace Microsoft.Azure.SignalR
 {
-    public class NegotiateHandler
+    internal class NegotiateHandler
     {
         private static readonly Type _negotiateHandlerType = typeof(ServiceOptions).Assembly.GetType("Microsoft.Azure.SignalR.NegotiateHandler");
         private static readonly MethodInfo _processNegotiate = _negotiateHandlerType.GetMethod("Process");
