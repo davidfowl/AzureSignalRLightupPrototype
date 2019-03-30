@@ -24,9 +24,9 @@ namespace Microsoft.Azure.SignalR.Remix
             {
                 var endpoint = endpoints[i];
                 var hubMetadata = endpoint.Metadata.GetMetadata<HubMetadata>();
+                var negotiateMetadata = endpoint.Metadata.GetMetadata<NegotiateMetadata>();
 
-                // REVIEW: Should we add metadata for the negotiate endpoint to make this a bit cleaner?
-                if (hubMetadata != null && endpoint is RouteEndpoint route && route.RoutePattern.RawText.EndsWith("/negotiate"))
+                if (hubMetadata != null && negotiateMetadata != null)
                 {
                     return true;
                 }
