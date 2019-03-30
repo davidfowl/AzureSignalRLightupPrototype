@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Http.Endpoints;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.AspNetCore.SignalR;
@@ -40,7 +41,6 @@ namespace Microsoft.Azure.SignalR.Remix
             for (var i = 0; i < candidates.Count; i++)
             {
                 ref var candidate = ref candidates[i];
-                var endpoint = candidate.Endpoint as RouteEndpoint;
 
                 var newEndpoint = _negotiateEndpointCache.GetOrAdd(candidate.Endpoint, CreateNegotiateEndpoint);
 
@@ -55,43 +55,12 @@ namespace Microsoft.Azure.SignalR.Remix
             Debug.Assert(endpoint is RouteEndpoint, "Not a route end point!");
 
             var routeEndpoint = (RouteEndpoint)endpoint;
-            var hubMetadata = endpoint.Metadata.GetMetadata<HubMetadata>();
 
             // This replaces the negotiate endpoint with one that does the service redirect
-
-            var routeEndpointBuilder = new RouteEndpointBuilder(async context =>
-            {
-                var handler = new NegotiateHandler(context.RequestServices);
-
-                NegotiationResponse negotiateResponse = null;
-                try
-                {
-                    negotiateResponse = handler.Process(context, hubMetadata.HubType.Name);
-                }
-                catch (AzureSignalRAccessTokenTooLongException ex)
-                {
-                    // Log.NegotiateFailed(_logger, ex.Message);
-                    context.Response.StatusCode = 413;
-                    await context.Response.WriteAsync(ex.Message);
-                    return;
-                }
-
-                var writer = new MemoryBufferWriter();
-                try
-                {
-                    context.Response.ContentType = "application/json";
-                    NegotiateProtocol.WriteResponse(negotiateResponse, writer);
-                    // Write it out to the response with the right content length
-                    context.Response.ContentLength = writer.Length;
-                    await writer.CopyToAsync(context.Response.Body);
-                }
-                finally
-                {
-                    writer.Reset();
-                }
-            },
-            routeEndpoint.RoutePattern,
-            routeEndpoint.Order);
+            var routeEndpointBuilder = new RouteEndpointBuilder(
+                ProcessNegotiate, 
+                routeEndpoint.RoutePattern, 
+                routeEndpoint.Order);
 
             // Preserve the metadata
             foreach (var metadata in endpoint.Metadata)
@@ -100,6 +69,40 @@ namespace Microsoft.Azure.SignalR.Remix
             }
 
             return routeEndpointBuilder.Build();
+        }
+
+        private static async Task ProcessNegotiate(HttpContext context)
+        {
+            var hubMetadata = context.GetEndpoint().Metadata.GetMetadata<HubMetadata>();
+
+            var handler = new NegotiateHandler(context.RequestServices);
+            NegotiationResponse negotiateResponse;
+
+            try
+            {
+                negotiateResponse = handler.Process(context, hubMetadata.HubType.Name);
+            }
+            catch (AzureSignalRAccessTokenTooLongException ex)
+            {
+                // Log.NegotiateFailed(_logger, ex.Message);
+                context.Response.StatusCode = 413;
+                await context.Response.WriteAsync(ex.Message);
+                return;
+            }
+
+            var writer = new MemoryBufferWriter();
+            try
+            {
+                context.Response.ContentType = "application/json";
+                NegotiateProtocol.WriteResponse(negotiateResponse, writer);
+                // Write it out to the response with the right content length
+                context.Response.ContentLength = writer.Length;
+                await writer.CopyToAsync(context.Response.Body);
+            }
+            finally
+            {
+                writer.Reset();
+            }
         }
     }
 }
