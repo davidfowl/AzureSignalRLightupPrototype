@@ -22,13 +22,15 @@ namespace WebApplication155
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting(routes =>
-            {
-                routes.MapHub<Chat>("/chat");
-                routes.MapHub<NotificationHub>("/notificatons");
-            });
+            app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<Chat>("/chat");
+                endpoints.MapHub<NotificationHub>("/notificatons");
+            });
         }
     }
 }
